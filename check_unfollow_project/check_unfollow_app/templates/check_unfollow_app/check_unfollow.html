@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Unfollow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #e6f7ff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            position: relative;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #005662;
+        }
+        form {
+            margin: 25px 0;
+        }
+        input[type="file"] {
+            margin: 12px 0;
+            padding: 12px;
+            border: 1px solid #b2ebf2;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+            transition: border 0.3s;
+        }
+        input[type="file"]:focus {
+            border-color: #00796b;
+        }
+        button {
+            background: linear-gradient(135deg, #00796b, #00bfa5);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #00bfa5, #00796b);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #e0f2f1;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        li:hover {
+            background: #b2dfdb;
+        }
+        a {
+            text-decoration: none;
+            color: #00796b;
+            font-weight: 600;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .instructions {
+            background: #e0f7fa;
+            border: 1px solid #80deea;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            color: #004d40;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 15px;
+                padding: 20px;
+            }
+            button {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <script>
+        function hideInstructions() {
+            var instructions = document.getElementById("instructions");
+            instructions.style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Check Unfollow</h1>
+    </header>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" onsubmit="hideInstructions()">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Unggah</button>
+        </form>
+
+        <div id="instructions" class="instructions">
+            <h2>Cara Mendapatkan File JSON</h2>
+            <p>Untuk menggunakan fitur ini, Anda perlu mengunggah dua file JSON:</p>
+            <ol>
+                <li><strong>followers_1.json</strong>: File ini berisi daftar pengikut Anda.</li>
+                <li><strong>following.json</strong>: File ini berisi daftar akun yang Anda ikuti.</li>
+            </ol>
+            <p>Anda dapat mengekspor data ini dari aplikasi Instagram di bagian Pusat Akun atau menggunakan alat pihak ketiga yang dapat membantu Anda mendapatkan data ini dalam format JSON.</p>
+            <p>Setelah Anda mendapatkan file-file tersebut, silakan unggah di atas.</p>
+        </div>
+
+        {% if result %}
+            <h2>Akun yang Tidak Mengikuti Balik:</h2>
+            <ul>
+                {% for user in result %}
+                    <li><a href="https://www.instagram.com/{{ user }}" target="_blank">{{ user }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Tidak ada akun yang tidak mengikuti Anda.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
